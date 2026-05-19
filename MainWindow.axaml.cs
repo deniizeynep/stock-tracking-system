@@ -187,26 +187,24 @@ public partial class MainWindow : Window
         var ozellikPenceresi = new OzelliklerWindow(seciliKategori);
         await ozellikPenceresi.ShowDialog(this);
     }
-
-   // Bu metodu MainWindow class'ının içine ekleyin
-private async void BtnSatirGuncelle_Click(object? sender, RoutedEventArgs e)
-{
-    // Tıklanan butonu yakalıyoruz
-    var button = sender as Button;
-    
-    // Butonun içindeki CommandParameter'dan o satıra ait Urun nesnesini alıyoruz
-    if (button?.CommandParameter is Urun seciliUrun)
+    private async void BtnOzellikGor_Click(object? sender, RoutedEventArgs e)
     {
-        // Güncelleme penceresini oluştur ve seçili ürünü gönder
-        var guncellePenceresi = new GuncelleWindow(seciliUrun);
-        
-        // Pencereyi modal olarak aç (Ana pencereyi kilitler, işlem bitince döner)
-        await guncellePenceresi.ShowDialog(this);
-        
-        // Pencere kapandığında ana listedeki verileri yenile (Veritabanından güncel hali çek)
-        UrunleriListele();
+        if (sender is Button btn && btn.CommandParameter is Urun seciliUrun)
+        {
+            var ozellikPenceresi = new OzellikGosterWindow(seciliUrun);
+            await ozellikPenceresi.ShowDialog(this);
+        }
     }
-}
+    private async void BtnSatirGuncelle_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.CommandParameter is Urun seciliUrun)
+        {
+            var guncellePenceresi = new GuncelleWindow(seciliUrun);
+            await guncellePenceresi.ShowDialog(this);
+            
+            UrunleriListele();
+        }
+    }
     private void BtnTemizle_Click(object? sender, RoutedEventArgs e)
     {
         txtBarkod.Text = "";
@@ -225,17 +223,6 @@ private async void BtnSatirGuncelle_Click(object? sender, RoutedEventArgs e)
         // Listeden seçimi kaldır
         lstUrunler.SelectedItem = null;
     }
-
-   private async void BtnOzellikGor_Click(object? sender, RoutedEventArgs e)
-{
-    var button = sender as Button;
-    if (button?.CommandParameter is Urun seciliUrun)
-    {
-        // Özellik göster penceresini açıyoruz
-        var ozellikPenceresi = new OzellikGosterWindow(seciliUrun);
-        await ozellikPenceresi.ShowDialog(this);
-    }
-}
 private void BtnTemaDegistir_Click(object? sender, RoutedEventArgs e)
     {
         if (Application.Current != null)

@@ -1,0 +1,137 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:m="using:StokTakipSistemi.Models"
+        x:Class="StokTakipSistemi.MainWindow"
+        Title="Stok Takip Sistemi" Width="800" Height="500">
+    
+    <Grid ColumnDefinitions="300, *">
+    <Button x:Name="btnTemaDegistir" Content="☀️" 
+                Width="45" Height="45" CornerRadius="25"
+                FontSize="24" Padding="0"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Background="Transparent" BorderThickness="0"
+                Grid.Column="1" Margin="0,15,20,0" ZIndex="100"
+                ToolTip.Tip="Temayı Değiştir">
+            
+            <Button.Styles>
+                <Style Selector="Button">
+                    <Setter Property="Transitions">
+                        <Transitions>
+                            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3"/>
+                        </Transitions>
+                    </Setter>
+                </Style>
+                <Style Selector="Button:pressed">
+                    <Setter Property="RenderTransform" Value="scale(0.8) rotate(30deg)"/>
+                </Style>
+            </Button.Styles>
+        </Button>
+        
+       <StackPanel Grid.Column="0" Margin="15" Spacing="10">
+    <TextBlock Text="Yeni Ürün Ekle" FontWeight="Bold" FontSize="20" Margin="0,0,0,10"/>
+    
+    <TextBox x:Name="txtBarkod" PlaceholderText="Barkod Numarası"/>
+    <TextBox x:Name="txtUrunAdi" PlaceholderText="Ürün Adı"/>
+    <ComboBox x:Name="cmbKategori" PlaceholderText="Kategori Seçin" HorizontalAlignment="Stretch">
+        <ComboBoxItem Content="Bilgisayar"/>
+        <ComboBoxItem Content="Telefon"/>
+        <ComboBoxItem Content="Televizyon"/>
+        <ComboBoxItem Content="Ev Aletleri"/>
+    </ComboBox>
+    <TextBox x:Name="txtFiyat" PlaceholderText="Fiyat (TL)"/>
+    <TextBox x:Name="txtStok" PlaceholderText="Stok Miktarı"/>
+    
+    <Button x:Name="btnKaydet" Content="Ürünü Kaydet" 
+            Background="#28a745" Foreground="White" 
+            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btnDetayGir" Content="⚙️ Teknik Özellikleri Gir" 
+        Background="#6f42c1" Foreground="White" 
+        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+        Margin="0,5,0,0"/>
+   
+    <Button x:Name="btnTemizle" Content="🔄 Formu Temizle" 
+            Background="#6c757d" Foreground="White" FontWeight="Bold"
+            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+
+    <!-- Finansal Analiz Bloğu (Burası Aynı Kalıyor) -->
+    <Border BorderBrush="#6f42c1" BorderThickness="2" CornerRadius="5" Margin="0,20,0,0" Padding="10">
+        <StackPanel Spacing="5">
+            <TextBlock Text="Finansal Analiz &amp; Canlı Kur" FontWeight="Bold" Foreground="#6f42c1" FontSize="16"/>
+            <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,5">
+                <TextBlock x:Name="lblDolar" Text="USD: Yükleniyor..."/>
+                <TextBlock x:Name="lblEuro" Text="EUR: Yükleniyor..."/>
+            </StackPanel>
+            <Separator Height="1" Background="#6f42c1" Margin="0,5"/>
+            <TextBlock x:Name="txtDolarKarsiligi" Text="Depo Değeri ($): 0.00" Foreground="#28a745" FontWeight="Bold"/>
+            <TextBlock x:Name="txtEuroKarsiligi" Text="Depo Değeri (€): 0.00" Foreground="#17a2b8" FontWeight="Bold"/>
+        </StackPanel>
+    </Border>
+</StackPanel>
+
+        <Grid Grid.Column="1" Margin="15">
+          <!-- Mevcut Stoklar Panelinin Başlangıcı -->
+<StackPanel>
+    <TextBlock Text="Mevcut Stoklar" FontWeight="Bold" FontSize="20" Margin="0,0,0,10"/>
+    <TextBlock x:Name="txtToplamDeger" Foreground="#0d6efd" FontWeight="Bold" FontSize="18" Margin="0,0,0,15"/>
+    
+    <TextBox x:Name="txtArama" PlaceholderText="🔍 Ürün Adı veya Barkod ile Ara..." 
+             Margin="0,0,0,10" TextChanged="TxtArama_TextChanged"/>
+
+    <!-- LİSTBOX BAŞLANGICI -->
+   <ListBox x:Name="lstUrunler" Height="300">
+    <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="m:Urun">
+            <Grid ColumnDefinitions="*, Auto">
+                
+                <!-- Sol Taraf: Ürün Temel Bilgileri -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Barkod}" FontWeight="Bold" Width="80"/>
+                    <TextBlock Text="{Binding UrunAdi}" Width="130"/>
+                    <TextBlock Text="{Binding StokMiktari, StringFormat='Stok: {0}'}" Foreground="Red" Width="70"/>
+                </StackPanel>
+
+                <!-- Sağ Taraf: İşlem Butonları -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    
+                    <!-- Teknik Özellikleri Gör Butonu (Yazısız, Mavi Tonu) -->
+                    <Button Content="👁️" 
+                            Click="BtnOzellikGor_Click" 
+                            CommandParameter="{Binding}"
+                            Background="#17a2b8" 
+                            Foreground="White"
+                            FontSize="14"
+                            Padding="8"
+                            CornerRadius="20"
+                            ToolTip.Tip="Teknik Özellikleri Gör"/>
+
+                    <!-- Düzenle Butonu (Yazısız, Pembe) -->
+                    <Button Content="🖋️" 
+                            Click="BtnSatirGuncelle_Click" 
+                            CommandParameter="{Binding}"
+                            Background="HotPink" 
+                            Foreground="White"
+                            FontSize="14"
+                            Padding="8"
+                            CornerRadius="20"
+                            ToolTip.Tip="Ürünü Düzenle"/>
+                            
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+</ListBox>
+    <!-- LİSTBOX BİTİŞİ -->
+
+    <Button x:Name="btnSil" Content="Seçili Ürünü Sil" 
+            Background="#dc3545" Foreground="White" 
+            Margin="0,10,0,0" HorizontalAlignment="Right" Padding="15,5" 
+            Click="BtnSil_Click"/>
+            
+    <TextBlock x:Name="txtUyari" Foreground="Red" FontWeight="Bold" 
+               Margin="0,20,0,0" TextWrapping="Wrap" FontSize="14"/>
+</StackPanel> 
+        </Grid>
+
+    </Grid>
+</Window>

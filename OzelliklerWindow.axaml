@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="StokTakipSistemi.OzelliklerWindow"
+        Title="Teknik Özellikler" Width="450" Height="550"
+        WindowStartupLocation="CenterOwner">
+    
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Spacing="15">
+            
+            <TextBlock x:Name="txtBaslik" Text="Teknik Özellik Formu" FontSize="22" FontWeight="Bold" 
+                       Foreground="#0d6efd" TextAlignment="Center" Margin="0,0,0,10"/>
+            
+            <TextBox x:Name="txtMarka" PlaceholderText="Marka"/>
+            <TextBox x:Name="txtModel" PlaceholderText="Model"/>
+
+            <StackPanel x:Name="pnlBilgisayar" Spacing="15" IsVisible="False">
+                <TextBox x:Name="txtIslemci" PlaceholderText="İşlemci (Örn: Intel i7)"/>
+                <TextBox x:Name="txtRam" PlaceholderText="RAM Kapasitesi (Örn: 16 GB)"/>
+            </StackPanel>
+
+            <StackPanel x:Name="pnlTelefon" Spacing="15" IsVisible="False">
+                <TextBox x:Name="txtKamera" PlaceholderText="Kamera (Örn: 48 MP)"/>
+                <TextBox x:Name="txtBatarya" PlaceholderText="Batarya (Örn: 5000 mAh)"/>
+            </StackPanel>
+
+            <StackPanel x:Name="pnlTelevizyon" Spacing="15" IsVisible="False">
+                <TextBox x:Name="txtCozunurluk" PlaceholderText="Çözünürlük (Örn: 4K UHD)"/>
+                <TextBox x:Name="txtEkranBoyutu" PlaceholderText="Ekran Boyutu (Örn: 55 inç)"/>
+            </StackPanel>
+
+            <StackPanel x:Name="pnlEvAletleri" Spacing="15" IsVisible="False">
+                <TextBox x:Name="txtGuc" PlaceholderText="Güç Tüketimi (Örn: 2000 Watt)"/>
+                <TextBox x:Name="txtHacim" PlaceholderText="Kapasite/Hacim (Örn: 9 kg)"/>
+            </StackPanel>
+            
+            <Button x:Name="btnOzellikKaydet" Content="Özellikleri Onayla ve Kapat" 
+                    Background="#0dcaf0" Foreground="Black" FontWeight="Bold"
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                    Margin="0,15,0,0" Padding="10"/>
+        </StackPanel>
+    </Grid>
+</Window>

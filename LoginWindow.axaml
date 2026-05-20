@@ -1,0 +1,30 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="StokTakipSistemi.LoginWindow"
+        Title="Sisteme Giriş" Width="400" Height="520"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False">
+    
+    <Grid Margin="30,30,30,40">
+        <StackPanel VerticalAlignment="Center" Spacing="20">
+            
+            <TextBlock Text="🔐" FontSize="60" HorizontalAlignment="Center"/>
+            <TextBlock Text="Yönetici Girişi" FontSize="24" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Foreground="#b388ff" Margin="0,0,0,10"/>
+            
+            <TextBlock Text="Kullanıcı Adı:"/>
+            <TextBox x:Name="txtKullaniciAdi" PlaceholderText="Kullanıcı adınızı girin..."/>
+            
+            <TextBlock Text="Şifre:"/>
+            <TextBox x:Name="txtSifre" PasswordChar="•" PlaceholderText="Şifrenizi girin..."/>
+            
+            <TextBlock x:Name="txtUyari" Foreground="#ff6b6b" FontWeight="Bold" 
+                       TextAlignment="Center" TextWrapping="Wrap" Margin="0,5"/>
+
+            <Button x:Name="btnGiris" Content="Sisteme Giriş Yap" 
+                    Background="#28a745" Foreground="White" FontWeight="Bold" FontSize="16"
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10"/>
+                    
+        </StackPanel>
+    </Grid>
+</Window>

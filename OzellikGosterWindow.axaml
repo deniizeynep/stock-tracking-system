@@ -1,6 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="StokTakipSistemi.OzellikGosterWindow"
+        x:Class="StokTakipSistemi.OzellikGosterWindow" 
         Title="Teknik Özellikler" Width="350" Height="400"
         WindowStartupLocation="CenterOwner">
     

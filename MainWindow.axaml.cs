@@ -15,10 +15,7 @@ namespace StokTakipSistemi;
 
 public partial class MainWindow : Window
 {
-
-    
     private Database _db;
-
     private string _geciciOzellikler = "";
     private double _usdKuru = 1.0;
     private double _eurKuru = 1.0;
@@ -28,37 +25,73 @@ public partial class MainWindow : Window
         InitializeComponent();
         
         _db = new Database();
-        
+
+        using (var connection = _db.GetConnection())
+        {
+            // 1. Tablo yoksa en güncel haliyle yarat
+            string tabloYaratSql = @"CREATE TABLE IF NOT EXISTS Urunler (
+                                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                        Barkod TEXT,
+                                        UrunAdi TEXT,
+                                        Kategori TEXT,
+                                        Fiyat REAL,
+                                        StokMiktari INTEGER,
+                                        Ozellikler TEXT
+                                     );";
+            connection.Execute(tabloYaratSql);
+
+            // 2. Tablo zaten varsa ama Ozellikler sütunu yoksa, zorla ekle (İşte hayat kurtaran satır!)
+            try { connection.Execute("ALTER TABLE Urunler ADD COLUMN Ozellikler TEXT;"); }
+            catch { /* Sütun zaten varsa hata vermeden sessizce geç */ }
+        }
+
         btnKaydet.Click += BtnKaydet_Click;
         btnSil.Click += BtnSil_Click;
         btnDetayGir.Click += BtnDetayGir_Click;
         btnTemizle.Click += BtnTemizle_Click;
-    btnTemaDegistir.Click += BtnTemaDegistir_Click;
+        lstUrunler.SelectionChanged += LstUrunler_SelectionChanged;
+        btnTemaDegistir.Click += BtnTemaDegistir_Click;
 
         UrunleriListele();
         KritikStokKontrol();
     }
 
-    private void BtnKaydet_Click(object? sender, RoutedEventArgs e)
+  private void BtnKaydet_Click(object? sender, RoutedEventArgs e)
     {
+        if (string.IsNullOrWhiteSpace(txtBarkod.Text) || 
+            string.IsNullOrWhiteSpace(txtUrunAdi.Text) || 
+            string.IsNullOrWhiteSpace(txtFiyat.Text) || 
+            string.IsNullOrWhiteSpace(txtStok.Text) || 
+            cmbKategori.SelectedIndex == -1)
+        {
+            txtFormUyari.Text = "⚠️ Lütfen tüm alanları (Barkod, Ürün Adı, Kategori, Fiyat, Stok Miktarı) doldurunuz!";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_geciciOzellikler))
+        {
+            txtFormUyari.Text = "⚠️ Lütfen ürünü kaydetmeden önce 'Teknik Özellikleri Gir' butonundan detayları doldurun!";
+            return; 
+        }
+
         try
         {
-            // Kullanıcının ComboBox'tan hangi kategoriyi seçtiğini alıyoruz
             string seciliKategori = (cmbKategori.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Belirtilmedi";
 
             var yeniUrun = new Urun
             {
                 Barkod = txtBarkod.Text,
                 UrunAdi = txtUrunAdi.Text,
-                Kategori = seciliKategori, // Kategoriyi de ekledik
+                Kategori = seciliKategori, 
                 Fiyat = Convert.ToDouble(txtFiyat.Text),
-                StokMiktari = Convert.ToInt32(txtStok.Text)
+                StokMiktari = Convert.ToInt32(txtStok.Text),
+                Ozellikler = _geciciOzellikler 
             };
 
             using (var connection = _db.GetConnection())
             {
-                string sql = @"INSERT INTO Urunler (Barkod, UrunAdi, Kategori, Fiyat, StokMiktari) 
-                               VALUES (@Barkod, @UrunAdi, @Kategori, @Fiyat, @StokMiktari)";
+                string sql = @"INSERT INTO Urunler (Barkod, UrunAdi, Kategori, Fiyat, StokMiktari, Ozellikler) 
+                               VALUES (@Barkod, @UrunAdi, @Kategori, @Fiyat, @StokMiktari, @Ozellikler)";
                 connection.Execute(sql, yeniUrun);
             }
 
@@ -66,6 +99,8 @@ public partial class MainWindow : Window
             txtUrunAdi.Text = "";
             txtFiyat.Text = "";
             txtStok.Text = "";
+            _geciciOzellikler = ""; 
+            txtFormUyari.Text = ""; 
 
             UrunleriListele();
         }
@@ -73,6 +108,25 @@ public partial class MainWindow : Window
         {
             Console.WriteLine("Kayıt sırasında bir hata oluştu: " + ex.Message);
         }
+    }
+    private void BtnTemizle_Click(object? sender, RoutedEventArgs e)
+    {
+        txtBarkod.Text = "";
+        txtUrunAdi.Text = "";
+        txtFiyat.Text = "";
+        txtStok.Text = "";
+        cmbKategori.SelectedIndex = -1; 
+        txtFormUyari.Text = ""; // Temizle butonuna basılınca uyarı yazısını da temizliyoruz
+
+        txtBarkod.IsEnabled = true;
+        txtUrunAdi.IsEnabled = true;
+        txtFiyat.IsEnabled = true;
+        txtStok.IsEnabled = true;
+        cmbKategori.IsEnabled = true;
+        btnKaydet.IsEnabled = true;
+
+        lstUrunler.SelectedItem = null;
+        _geciciOzellikler = ""; 
     }
 
     private async void UrunleriListele()
@@ -114,19 +168,41 @@ public partial class MainWindow : Window
     {
         if (lstUrunler.SelectedItem is Urun seciliUrun)
         {
-            // Verileri doldur
+            // --- 1. DURUM: BİR ÜRÜN SEÇİLDİYSE KUTULARI DOLDUR VE KİLİTLE ---
             txtBarkod.Text = seciliUrun.Barkod;
             txtUrunAdi.Text = seciliUrun.UrunAdi;
             txtFiyat.Text = seciliUrun.Fiyat.ToString();
             txtStok.Text = seciliUrun.StokMiktari.ToString();
 
-            // SİHİRLİ DOKUNUŞ: Kutuları kilitliyoruz (Kullanıcı değiştiremez)
-            txtBarkod.IsEnabled = false;
-            txtUrunAdi.IsEnabled = false;
-            txtFiyat.IsEnabled = false;
-            txtStok.IsEnabled = false;
-            cmbKategori.IsEnabled = false;
-            btnKaydet.IsEnabled = false; // Kaydet butonunu da kapatıyoruz ki yanlışlıkla basmasın
+            foreach (ComboBoxItem item in cmbKategori.Items)
+            {
+                if (item.Content?.ToString() == seciliUrun.Kategori)
+                {
+                    cmbKategori.SelectedItem = item;
+                    break;
+                }
+            }
+
+            txtBarkod.IsEnabled = false; txtUrunAdi.IsEnabled = false;
+            txtFiyat.IsEnabled = false; txtStok.IsEnabled = false;
+            cmbKategori.IsEnabled = false; btnKaydet.IsEnabled = false; 
+            btnDetayGir.IsEnabled = false; 
+            
+            txtFormUyari.Text = ""; 
+        }
+        else
+        {
+            // --- 2. DURUM: SEÇİM İPTAL EDİLDİYSE (veya Çöp Kutusuna basıldıysa) HER ŞEYİ TEMİZLE VE AÇ ---
+            txtBarkod.Text = ""; txtUrunAdi.Text = ""; txtFiyat.Text = ""; txtStok.Text = "";
+            cmbKategori.SelectedIndex = -1; 
+            txtFormUyari.Text = ""; 
+
+            txtBarkod.IsEnabled = true; txtUrunAdi.IsEnabled = true;
+            txtFiyat.IsEnabled = true; txtStok.IsEnabled = true;
+            cmbKategori.IsEnabled = true; btnKaydet.IsEnabled = true;
+            btnDetayGir.IsEnabled = true;
+
+            _geciciOzellikler = ""; 
         }
     }
 
@@ -186,7 +262,10 @@ public partial class MainWindow : Window
         string seciliKategori = (cmbKategori.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "";
         var ozellikPenceresi = new OzelliklerWindow(seciliKategori);
         await ozellikPenceresi.ShowDialog(this);
+
+        _geciciOzellikler = ozellikPenceresi.ToplananOzellikler;
     }
+
     private async void BtnOzellikGor_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is Button btn && btn.CommandParameter is Urun seciliUrun)
@@ -195,6 +274,7 @@ public partial class MainWindow : Window
             await ozellikPenceresi.ShowDialog(this);
         }
     }
+
     private async void BtnSatirGuncelle_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is Button btn && btn.CommandParameter is Urun seciliUrun)
@@ -205,40 +285,81 @@ public partial class MainWindow : Window
             UrunleriListele();
         }
     }
-    private void BtnTemizle_Click(object? sender, RoutedEventArgs e)
-    {
-        txtBarkod.Text = "";
-        txtUrunAdi.Text = "";
-        txtFiyat.Text = "";
-        txtStok.Text = "";
-        cmbKategori.SelectedIndex = -1; 
 
-        txtBarkod.IsEnabled = true;
-        txtUrunAdi.IsEnabled = true;
-        txtFiyat.IsEnabled = true;
-        txtStok.IsEnabled = true;
-        cmbKategori.IsEnabled = true;
-        btnKaydet.IsEnabled = true;
-
-        // Listeden seçimi kaldır
-        lstUrunler.SelectedItem = null;
-    }
-private void BtnTemaDegistir_Click(object? sender, RoutedEventArgs e)
+    
+    private void BtnTemaDegistir_Click(object? sender, RoutedEventArgs e)
     {
         if (Application.Current != null)
         {
-            // Karanlıktaysa Aydınlığa (Light) çevir
             if (Application.Current.RequestedThemeVariant == ThemeVariant.Dark)
             {
                 Application.Current.RequestedThemeVariant = ThemeVariant.Light;
-                btnTemaDegistir.Content = "🌙"; // Sadece ikon
+                btnTemaDegistir.Content = "🌙"; 
             }
-            // Aydınlıktaysa Karanlığa (Dark) çevir
             else
             {
                 Application.Current.RequestedThemeVariant = ThemeVariant.Dark;
-                btnTemaDegistir.Content = "☀️"; // Sadece ikon
+                btnTemaDegistir.Content = "☀️"; 
             }
+        }
+    }
+    private void MenuItemFiltre_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem menuItem)
+        {
+            string filtre = menuItem.Header?.ToString() ?? "";
+            
+            using (var connection = _db.GetConnection())
+            {
+                string sql = "SELECT * FROM Urunler"; // Varsayılan: Tüm Ürünler
+
+                if (filtre.Contains("Kritik Stok"))
+                {
+                    sql = "SELECT * FROM Urunler WHERE StokMiktari < 10";
+                }
+                else if (filtre.Contains("Bilgisayar")) sql = "SELECT * FROM Urunler WHERE Kategori = 'Bilgisayar'";
+                else if (filtre.Contains("Telefon")) sql = "SELECT * FROM Urunler WHERE Kategori = 'Telefon'";
+                else if (filtre.Contains("Televizyon")) sql = "SELECT * FROM Urunler WHERE Kategori = 'Televizyon'";
+                else if (filtre.Contains("Beyaz Eşya")) sql = "SELECT * FROM Urunler WHERE Kategori = 'Beyaz Eşya'";
+
+                var filtrelenmisUrunler = connection.Query<Urun>(sql).ToList();
+                lstUrunler.ItemsSource = filtrelenmisUrunler;
+            }
+        }
+    }
+
+    private void BtnExcelAktar_Click(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            string masaustuYolu = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string dosyaAdi = $"StokRaporu_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+            string tamYol = System.IO.Path.Combine(masaustuYolu, dosyaAdi);
+
+            using (var connection = _db.GetConnection())
+            {
+                var urunler = connection.Query<Urun>("SELECT * FROM Urunler").ToList();
+                
+                using (var writer = new System.IO.StreamWriter(tamYol, false, System.Text.Encoding.UTF8))
+                {
+                    writer.WriteLine("Barkod;Urun Adi;Kategori;Fiyat;Stok Miktari;Ozellikler");
+                    
+                    foreach (var urun in urunler)
+                    {
+                        string temizOzellik = urun.Ozellikler?.Replace("\n", " ").Replace(";", ",") ?? "Belirtilmedi";
+                        string satir = $"{urun.Barkod};{urun.UrunAdi};{urun.Kategori};{urun.Fiyat};{urun.StokMiktari};{temizOzellik}";
+                        writer.WriteLine(satir);
+                    }
+                }
+            }
+            
+            txtUyari.Foreground = Avalonia.Media.SolidColorBrush.Parse("#0dcaf0");
+            txtUyari.Text = $"✅ Rapor başarıyla masaüstüne kaydedildi:\n{dosyaAdi}";
+        }
+        catch (Exception ex)
+        {
+            txtUyari.Foreground = Avalonia.Media.SolidColorBrush.Parse("#ff6b6b");
+            txtUyari.Text = $"❌ Excel'e aktarılırken hata oluştu: {ex.Message}";
         }
     }
 }

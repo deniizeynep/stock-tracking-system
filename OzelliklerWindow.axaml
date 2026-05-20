@@ -1,42 +1,52 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="StokTakipSistemi.OzelliklerWindow"
-        Title="Teknik Özellikler" Width="450" Height="550"
+        Title="Teknik Özellik Girişi" Width="400" Height="500"
         WindowStartupLocation="CenterOwner">
     
-    <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Spacing="15">
+    <Grid Margin="20">
+        <StackPanel Spacing="10">
+            <TextBlock x:Name="txtBaslik" Text="Teknik Özellikler" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" Foreground="#6f42c1"/>
             
-            <TextBlock x:Name="txtBaslik" Text="Teknik Özellik Formu" FontSize="22" FontWeight="Bold" 
-                       Foreground="#0d6efd" TextAlignment="Center" Margin="0,0,0,10"/>
+            <TextBlock Text="Marka:"/>
+            <TextBox x:Name="txtMarka" PlaceholderText="Örn: Samsung, Apple, Bosch"/>
             
-            <TextBox x:Name="txtMarka" PlaceholderText="Marka"/>
-            <TextBox x:Name="txtModel" PlaceholderText="Model"/>
+            <TextBlock Text="Model:"/>
+            <TextBox x:Name="txtModel" PlaceholderText="Örn: Galaxy S23, Series 6"/>
 
-            <StackPanel x:Name="pnlBilgisayar" Spacing="15" IsVisible="False">
-                <TextBox x:Name="txtIslemci" PlaceholderText="İşlemci (Örn: Intel i7)"/>
-                <TextBox x:Name="txtRam" PlaceholderText="RAM Kapasitesi (Örn: 16 GB)"/>
+            <StackPanel x:Name="pnlBilgisayar" IsVisible="False" Spacing="10">
+                <TextBlock Text="İşlemci:"/>
+                <TextBox x:Name="txtIslemci" PlaceholderText="Örn: Intel i5, Apple M2"/>
+                <TextBlock Text="RAM:"/>
+                <TextBox x:Name="txtRam" PlaceholderText="Örn: 16 GB, 32 GB"/>
             </StackPanel>
 
-            <StackPanel x:Name="pnlTelefon" Spacing="15" IsVisible="False">
-                <TextBox x:Name="txtKamera" PlaceholderText="Kamera (Örn: 48 MP)"/>
-                <TextBox x:Name="txtBatarya" PlaceholderText="Batarya (Örn: 5000 mAh)"/>
+            <StackPanel x:Name="pnlTelefon" IsVisible="False" Spacing="10">
+                <TextBlock Text="Kamera Çözünürlüğü:"/>
+                <TextBox x:Name="txtKamera" PlaceholderText="Örn: 108 MP, 12 MP Dual"/>
+                <TextBlock Text="Batarya Kapasitesi:"/>
+                <TextBox x:Name="txtBatarya" PlaceholderText="Örn: 5000 mAh"/>
             </StackPanel>
 
-            <StackPanel x:Name="pnlTelevizyon" Spacing="15" IsVisible="False">
-                <TextBox x:Name="txtCozunurluk" PlaceholderText="Çözünürlük (Örn: 4K UHD)"/>
-                <TextBox x:Name="txtEkranBoyutu" PlaceholderText="Ekran Boyutu (Örn: 55 inç)"/>
+            <StackPanel x:Name="pnlTelevizyon" IsVisible="False" Spacing="10">
+                <TextBlock Text="Çözünürlük:"/>
+                <TextBox x:Name="txtCozunurluk" PlaceholderText="Örn: 4K Ultra HD, OLED"/>
+                <TextBlock Text="Ekran Boyutu:"/>
+                <TextBox x:Name="txtEkranBoyutu" PlaceholderText="Örn: 55 İnç, 65 İnç"/>
             </StackPanel>
 
-            <StackPanel x:Name="pnlEvAletleri" Spacing="15" IsVisible="False">
-                <TextBox x:Name="txtGuc" PlaceholderText="Güç Tüketimi (Örn: 2000 Watt)"/>
-                <TextBox x:Name="txtHacim" PlaceholderText="Kapasite/Hacim (Örn: 9 kg)"/>
+            <StackPanel x:Name="pnlEvAletleri" IsVisible="False" Spacing="10">
+                <TextBlock x:Name="lblDinamik1" Text="Güç Tüketimi:"/>
+                <TextBox x:Name="txtGuc" PlaceholderText="Veri giriniz..."/>
+                
+                <TextBlock x:Name="lblDinamik2" Text="Kapasite/Hacim:"/>
+                <TextBox x:Name="txtHacim" PlaceholderText="Veri giriniz..."/>
             </StackPanel>
-            
-            <Button x:Name="btnOzellikKaydet" Content="Özellikleri Onayla ve Kapat" 
-                    Background="#0dcaf0" Foreground="Black" FontWeight="Bold"
+
+            <Button x:Name="btnOzellikKaydet" Content="Özellikleri Onayla" 
+                    Background="#6f42c1" Foreground="White" 
                     HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
-                    Margin="0,15,0,0" Padding="10"/>
+                    Margin="0,20,0,0"/>
         </StackPanel>
     </Grid>
 </Window>

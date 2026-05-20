@@ -1,0 +1,8 @@
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/publish/StokTakipSistemi.pdb
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/publish/av_libglesv2.dll
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/publish/libHarfBuzzSharp.dll
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/publish/libHarfBuzzSharp.pdb
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/publish/libSkiaSharp.dll
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/publish/libSkiaSharp.pdb
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/publish/e_sqlite3.dll
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/publish/StokTakipSistemi.exe

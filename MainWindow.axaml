@@ -69,7 +69,7 @@
                         Background="#28a745" Foreground="White" FontWeight="Bold"
                         HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
 
-                <Border BorderBrush="#6f42c1" BorderThickness="2" CornerRadius="5" Margin="0,15,0,10" Padding="10">
+                <Border x:Name="brdFinansal" BorderBrush="#6f42c1" BorderThickness="2" CornerRadius="5" Margin="0,15,0,10" Padding="10">
                     <StackPanel Spacing="5">
                         <TextBlock Text="Finansal Analiz &amp; Canlı Kur" FontWeight="Bold" Foreground="#b388ff" FontSize="16"/>
                         <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,5">

@@ -19,16 +19,19 @@ public partial class MainWindow : Window
     private string _geciciOzellikler = "";
     private double _usdKuru = 1.0;
     private double _eurKuru = 1.0;
+    private string _aktifKullaniciYetkisi;
 
-    public MainWindow()
+    public MainWindow(string kullaniciYetkisi = "Admin")
     {
         InitializeComponent();
+
+        _aktifKullaniciYetkisi = kullaniciYetkisi;
+
         
         _db = new Database();
 
         using (var connection = _db.GetConnection())
         {
-            // 1. Tablo yoksa en güncel haliyle yarat
             string tabloYaratSql = @"CREATE TABLE IF NOT EXISTS Urunler (
                                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                                         Barkod TEXT,
@@ -40,9 +43,8 @@ public partial class MainWindow : Window
                                      );";
             connection.Execute(tabloYaratSql);
 
-            // 2. Tablo zaten varsa ama Ozellikler sütunu yoksa, zorla ekle (İşte hayat kurtaran satır!)
             try { connection.Execute("ALTER TABLE Urunler ADD COLUMN Ozellikler TEXT;"); }
-            catch { /* Sütun zaten varsa hata vermeden sessizce geç */ }
+            catch {  }
         }
 
         btnKaydet.Click += BtnKaydet_Click;
@@ -52,6 +54,7 @@ public partial class MainWindow : Window
         lstUrunler.SelectionChanged += LstUrunler_SelectionChanged;
         btnTemaDegistir.Click += BtnTemaDegistir_Click;
 
+        YetkiAyarlariniUygula();
         UrunleriListele();
         KritikStokKontrol();
     }
@@ -360,6 +363,19 @@ public partial class MainWindow : Window
         {
             txtUyari.Foreground = Avalonia.Media.SolidColorBrush.Parse("#ff6b6b");
             txtUyari.Text = $"❌ Excel'e aktarılırken hata oluştu: {ex.Message}";
+        }
+    }
+   private void YetkiAyarlariniUygula()
+    {
+        if (_aktifKullaniciYetkisi == "Personel")
+        {
+            // Personel ürün silemez ve rapor çekemez
+            if (btnSil != null) btnSil.IsVisible = false;
+            if (btnExcelAktar != null) btnExcelAktar.IsVisible = false;
+
+            // Personel deponun finansal değerlerini göremez
+            if (txtToplamDeger != null) txtToplamDeger.IsVisible = false;
+            if (this.FindControl<Border>("brdFinansal") is Border b) b.IsVisible = false;
         }
     }
 }

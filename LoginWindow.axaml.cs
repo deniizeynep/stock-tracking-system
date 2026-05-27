@@ -20,25 +20,29 @@ public partial class LoginWindow : Window
         btnGiris.Click += BtnGiris_Click;
     }
 
-    private void VeritabaniniHazirla()
+ private void VeritabaniniHazirla()
     {
         using (var connection = _db.GetConnection())
         {
+            connection.Execute("DROP TABLE IF EXISTS Kullanicilar;");
+
             string tabloSql = @"CREATE TABLE IF NOT EXISTS Kullanicilar (
                                   Id INTEGER PRIMARY KEY AUTOINCREMENT,
                                   KullaniciAdi TEXT UNIQUE,
-                                  Sifre TEXT
+                                  Sifre TEXT,
+                                  Yetki TEXT
                                 );";
             connection.Execute(tabloSql);
 
             int adminSayisi = connection.QuerySingle<int>("SELECT COUNT(*) FROM Kullanicilar WHERE KullaniciAdi = 'admin'");
             if (adminSayisi == 0)
-            {
-                connection.Execute("INSERT INTO Kullanicilar (KullaniciAdi, Sifre) VALUES ('admin', '1234')");
-            }
+                connection.Execute("INSERT INTO Kullanicilar (KullaniciAdi, Sifre, Yetki) VALUES ('admin', '1234', 'Admin')");
+
+            int personelSayisi = connection.QuerySingle<int>("SELECT COUNT(*) FROM Kullanicilar WHERE KullaniciAdi = 'personel'");
+            if (personelSayisi == 0)
+                connection.Execute("INSERT INTO Kullanicilar (KullaniciAdi, Sifre, Yetki) VALUES ('personel', '1234', 'Personel')");
         }
     }
-
     private void BtnGiris_Click(object? sender, RoutedEventArgs e)
     {
         string kAdi = txtKullaniciAdi.Text ?? "";
@@ -52,12 +56,12 @@ public partial class LoginWindow : Window
 
         using (var connection = _db.GetConnection())
         {
-            string sql = "SELECT COUNT(*) FROM Kullanicilar WHERE KullaniciAdi = @kAdi AND Sifre = @sifre";
-            int sonuc = connection.QuerySingle<int>(sql, new { kAdi, sifre });
+            string sql = "SELECT Yetki FROM Kullanicilar WHERE KullaniciAdi = @kAdi AND Sifre = @sifre";
+            string yetki = connection.QueryFirstOrDefault<string>(sql, new { kAdi, sifre });
 
-            if (sonuc > 0)
+            if (!string.IsNullOrEmpty(yetki))
             {
-                var mainWindow = new MainWindow();
+                var mainWindow = new MainWindow(yetki);
                 mainWindow.Show();
                 this.Close();
             }

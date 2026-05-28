@@ -20,12 +20,10 @@ public partial class LoginWindow : Window
         btnGiris.Click += BtnGiris_Click;
     }
 
- private void VeritabaniniHazirla()
+private void VeritabaniniHazirla()
     {
         using (var connection = _db.GetConnection())
         {
-            connection.Execute("DROP TABLE IF EXISTS Kullanicilar;");
-
             string tabloSql = @"CREATE TABLE IF NOT EXISTS Kullanicilar (
                                   Id INTEGER PRIMARY KEY AUTOINCREMENT,
                                   KullaniciAdi TEXT UNIQUE,

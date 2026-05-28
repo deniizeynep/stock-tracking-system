@@ -220,7 +220,6 @@
 /home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/hostfxr.dll
 /home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/hostpolicy.dll
 /home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/mscordaccore.dll
-/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/mscordaccore_amd64_amd64_8.0.2626.16921.dll
 /home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/mscordbi.dll
 /home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/mscorrc.dll
 /home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/msquic.dll
@@ -238,3 +237,4 @@
 /home/zeynep/stock-tracking-system/obj/Release/net8.0/win-x64/StokTakipSistemi.pdb
 /home/zeynep/stock-tracking-system/obj/Release/net8.0/win-x64/StokTakipSistemi.genruntimeconfig.cache
 /home/zeynep/stock-tracking-system/obj/Release/net8.0/win-x64/ref/StokTakipSistemi.dll
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/win-x64/mscordaccore_amd64_amd64_8.0.2726.22922.dll

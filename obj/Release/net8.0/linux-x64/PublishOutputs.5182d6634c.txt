@@ -1,2 +1,5 @@
 /home/zeynep/stock-tracking-system/bin/Release/net8.0/linux-x64/publish/StokTakipSistemi.pdb
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/linux-x64/publish/libHarfBuzzSharp.so
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/linux-x64/publish/libSkiaSharp.so
+/home/zeynep/stock-tracking-system/bin/Release/net8.0/linux-x64/publish/libe_sqlite3.so
 /home/zeynep/stock-tracking-system/bin/Release/net8.0/linux-x64/publish/StokTakipSistemi

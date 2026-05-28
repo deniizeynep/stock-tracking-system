@@ -2,159 +2,316 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:m="using:StokTakipSistemi.Models"
         x:Class="StokTakipSistemi.MainWindow"
-        Title="Stok Takip Sistemi" Width="850" Height="550"
-        MinWidth="800" MinHeight="550"> 
+        Title="Stok Takip Sistemi" Width="930" Height="550"
+        MinWidth="880" MinHeight="550"> 
         
-    <Grid ColumnDefinitions="310, 5, *">
-        
-        <Button x:Name="btnTemaDegistir" Content="☀️" 
-                Width="45" Height="45" CornerRadius="25"
-                FontSize="24" Padding="0"
-                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                HorizontalAlignment="Right" VerticalAlignment="Top"
-                Background="Transparent" BorderThickness="0"
-                Grid.Column="2" Margin="0,15,20,0" ZIndex="100"
-                ToolTip.Tip="Temayı Değiştir">
-            <Button.Styles>
-                <Style Selector="Button">
-                    <Setter Property="Transitions">
-                        <Transitions>
-                            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3"/>
-                        </Transitions>
-                    </Setter>
-                </Style>
-                <Style Selector="Button:pressed">
-                    <Setter Property="RenderTransform" Value="scale(0.8) rotate(30deg)"/>
-                </Style>
-            </Button.Styles>
-        </Button>
-        
-        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Padding="0,0,10,0">
-            <StackPanel Margin="15" Spacing="10">
-                
-                <Grid Margin="0,0,0,10">
-                    <TextBlock Text="Yeni Ürün Ekle" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"/>
-                    <Button x:Name="btnTemizle" Content="🧹" 
-                            Background="Transparent" BorderThickness="0"
-                            FontSize="22" Padding="0" 
-                            HorizontalAlignment="Right" VerticalAlignment="Center"
-                            ToolTip.Tip="Formu Temizle"/>
-                </Grid>
-                
-                <TextBox x:Name="txtBarkod" PlaceholderText="Barkod Numarası"/>
-                <TextBox x:Name="txtUrunAdi" PlaceholderText="Ürün Adı"/>
-               <ComboBox x:Name="cmbKategori" PlaceholderText="Kategori Seçin" HorizontalAlignment="Stretch">
-                    <ComboBoxItem Content="Bilgisayar"/>
-                    <ComboBoxItem Content="Telefon"/>
-                    <ComboBoxItem Content="Televizyon &amp; Ses Sistemleri"/>
-                    <ComboBoxItem Content="Beyaz Eşya"/>
-                    <ComboBoxItem Content="Mutfak Aletleri"/>
-                    <ComboBoxItem Content="Süpürge &amp; Temizlik"/>
-                    <ComboBoxItem Content="Kişisel Bakım"/>
-                    <ComboBoxItem Content="İklimlendirme"/>
-                </ComboBox>
-                <TextBox x:Name="txtFiyat" PlaceholderText="Fiyat (TL)"/>
-                <TextBox x:Name="txtStok" PlaceholderText="Stok Miktarı"/>
-                
-                <Button x:Name="btnDetayGir" Content="⚙️ Teknik Özellikleri Gir" 
-                        Background="Transparent" Foreground="#b388ff" 
-                        BorderBrush="#b388ff" BorderThickness="2"
-                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
-                        Margin="0,5,0,5"/>
-
-                <TextBlock x:Name="txtFormUyari" Foreground="#ff6b6b" FontWeight="Bold" 
-                           TextWrapping="Wrap" Margin="0,2,0,5" TextAlignment="Center" FontSize="13"/>
-
-                <Button x:Name="btnKaydet" Content="Ürünü Kaydet" 
-                        Background="#28a745" Foreground="White" FontWeight="Bold"
-                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-
-                <Border x:Name="brdFinansal" BorderBrush="#6f42c1" BorderThickness="2" CornerRadius="5" Margin="0,15,0,10" Padding="10">
-                    <StackPanel Spacing="5">
-                        <TextBlock Text="Finansal Analiz &amp; Canlı Kur" FontWeight="Bold" Foreground="#b388ff" FontSize="16"/>
-                        <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,5">
-                            <TextBlock x:Name="lblDolar" Text="USD: Yükleniyor..."/>
-                            <TextBlock x:Name="lblEuro" Text="EUR: Yükleniyor..."/>
-                        </StackPanel>
-                        <Separator Height="1" Background="#6f42c1" Margin="0,5"/>
-                        <TextBlock x:Name="txtDolarKarsiligi" Text="Depo Değeri ($): 0.00" Foreground="#28a745" FontWeight="Bold"/>
-                        <TextBlock x:Name="txtEuroKarsiligi" Text="Depo Değeri (€): 0.00" Foreground="#17a2b8" FontWeight="Bold"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
-
-        <GridSplitter Grid.Column="1" Background="Transparent" ResizeDirection="Columns" Width="5"/>
-
-       <Grid Grid.Column="2" Margin="15,40,15,15">
-            <StackPanel>
-                <TextBlock Text="Mevcut Stoklar" FontWeight="Bold" FontSize="20" Margin="0,0,0,10"/>
-                <TextBlock x:Name="txtToplamDeger" Foreground="#0d6efd" FontWeight="Bold" FontSize="18" Margin="0,0,0,15"/>
-                
-              <Grid Margin="0,0,0,15" ColumnDefinitions="*, Auto">
-                    <TextBox x:Name="txtArama" Grid.Column="0" PlaceholderText="🔍 Ürün Adı veya Barkod ile Ara..." 
-                             TextChanged="TxtArama_TextChanged" Margin="0,0,10,0"/>
-                             
-                    <Button Grid.Column="1" Content="☰" Width="40" Height="40" 
-                            Background="Transparent" FontSize="22" BorderThickness="0"
-                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                            ToolTip.Tip="Filtrele">
-                        <Button.Flyout>
-                            <MenuFlyout>
-                                <MenuItem Header="Tüm Ürünler" Click="MenuItemFiltre_Click"/>
-                                <MenuItem Header="⚠️ Kritik Stok" Click="MenuItemFiltre_Click"/>
-                                <MenuItem Header="💻 Bilgisayar" Click="MenuItemFiltre_Click"/>
-                                <MenuItem Header="☎️ Telefon" Click="MenuItemFiltre_Click"/>
-                                <MenuItem Header="📺 Televizyon" Click="MenuItemFiltre_Click"/>
-                                <MenuItem Header="❄️ Beyaz Eşya" Click="MenuItemFiltre_Click"/>
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
-                </Grid>
-
-                <Border BorderBrush="#495057" BorderThickness="0,0,0,1" Margin="0,0,0,5" Padding="5">
-                    <Grid ColumnDefinitions="*, Auto">
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15">
-                            <TextBlock Text="Barkod" FontWeight="Bold" Foreground="#adb5bd" Width="80"/>
-                            <TextBlock Text="Ürün Adı" FontWeight="Bold" Foreground="#adb5bd" Width="130"/>
-                            <TextBlock Text="Stok" FontWeight="Bold" Foreground="#adb5bd" Width="70"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" Text="İşlemler" FontWeight="Bold" Foreground="#adb5bd" Margin="0,0,15,0"/>
-                    </Grid>
-                </Border>
-
-                <ListBox x:Name="lstUrunler" Height="250" SelectionMode="Toggle">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate x:DataType="m:Urun">
-                            <Grid ColumnDefinitions="*, Auto">
-                                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Barkod}" FontWeight="Bold" Width="80"/>
-                                    <TextBlock Text="{Binding UrunAdi}" Width="130"/>
-                                    <TextBlock Text="{Binding StokMiktari, StringFormat='Stok: {0}'}" Foreground="#ff6b6b" Width="70"/>
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                                    <Button Content="👁️" Click="BtnOzellikGor_Click" CommandParameter="{Binding}" Background="#17a2b8" Foreground="White" FontSize="14" Padding="8" CornerRadius="20" ToolTip.Tip="Teknik Özellikleri Gör"/>
-                                    <Button Content="🖋️" Click="BtnSatirGuncelle_Click" CommandParameter="{Binding}" Background="HotPink" Foreground="White" FontSize="14" Padding="8" CornerRadius="20" ToolTip.Tip="Ürünü Düzenle"/>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,10,0,0">
-                    <Button x:Name="btnExcelAktar" Content="📥 Excel'e Aktar (CSV)" 
-                            Background="#198754" Foreground="White" Padding="15,5"
-                            Click="BtnExcelAktar_Click"/>
-                            
-                    <Button x:Name="btnSil" Content="🗑️ Seçili Ürünü Sil" 
-                            Background="#dc3545" Foreground="White" Padding="15,5" 
-                            Click="BtnSil_Click"/>
+    <Grid>
+        <Grid ColumnDefinitions="80, *">
+            
+            <Border Grid.Column="0" Background="#1a1a1a" BorderBrush="#333333" BorderThickness="0,0,1,0" ZIndex="100">
+                <StackPanel Spacing="30" Margin="0,40,0,0">
+                    <Button Click="BtnMenuStok_Click" Content="📦" FontSize="32" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Stok Yönetimi"/>
+                    <Button Click="BtnMenuFinans_Click" Content="📊" FontSize="26" Foreground="#6f42c1" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Stok Finans Özeti"/>                    
+                    <Button Click="BtnMenuPersonel_Click" Content="👥" FontSize="26" Foreground="#adb5bd" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Personeller"/>
+                    
+                    <Separator Background="#333333" Margin="15,10"/>
+                    
+                    <Button Click="BtnMenuAyarlar_Click" Content="⚙️" FontSize="26" Foreground="#adb5bd" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Sistem Ayarları"/>
                 </StackPanel>
+            </Border>
+
+            <Grid Grid.Column="1">
+                
+                <Grid x:Name="sayfaStok" ColumnDefinitions="310, 5, *" IsVisible="True">
+                    
+                    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Padding="0,0,10,0">
+                        <StackPanel Margin="15" Spacing="10">
+                            
+                            <Grid Margin="0,0,0,10">
+                                <TextBlock Text="Yeni Ürün Ekle" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"/>
+                                <Button x:Name="btnTemizle" Content="🧹" Background="Transparent" BorderThickness="0" FontSize="22" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip.Tip="Formu Temizle"/>
+                            </Grid>
+                            
+                            <TextBox x:Name="txtBarkod" PlaceholderText="Barkod Numarası"/>
+                            <TextBox x:Name="txtUrunAdi" PlaceholderText="Ürün Adı"/>
+                            <ComboBox x:Name="cmbKategori" PlaceholderText="Kategori Seçin" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="Bilgisayar"/>
+                                <ComboBoxItem Content="Telefon"/>
+                                <ComboBoxItem Content="Televizyon &amp; Ses Sistemleri"/>
+                                <ComboBoxItem Content="Beyaz Eşya"/>
+                                <ComboBoxItem Content="Mutfak Aletleri"/>
+                                <ComboBoxItem Content="Süpürge &amp; Temizlik"/>
+                                <ComboBoxItem Content="Kişisel Bakım"/>
+                                <ComboBoxItem Content="İklimlendirme"/>
+                            </ComboBox>
+                            <TextBox x:Name="txtFiyat" PlaceholderText="Fiyat (TL)"/>
+                            <TextBox x:Name="txtStok" PlaceholderText="Stok Miktarı"/>
+                            
+                            <Button x:Name="btnDetayGir" Content="⚙️ Teknik Özellikleri Gir" Background="Transparent" Foreground="#b388ff" BorderBrush="#b388ff" BorderThickness="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,5,0,5"/>
+                            <TextBlock x:Name="txtFormUyari" Foreground="#ff6b6b" FontWeight="Bold" TextWrapping="Wrap" Margin="0,2,0,5" TextAlignment="Center" FontSize="13"/>
+                            <Button x:Name="btnKaydet" Content="Ürünü Kaydet" Background="#28a745" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+
+                            <Border x:Name="brdFinansal" BorderBrush="#6f42c1" BorderThickness="2" CornerRadius="5" Margin="0,15,0,10" Padding="10">
+                                <StackPanel Spacing="5">
+                                    <TextBlock Text="Finansal Analiz &amp; Canlı Kur" FontWeight="Bold" Foreground="#b388ff" FontSize="16"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,5">
+                                        <TextBlock x:Name="lblDolar" Text="USD: Yükleniyor..."/>
+                                        <TextBlock x:Name="lblEuro" Text="EUR: Yükleniyor..."/>
+                                    </StackPanel>
+                                    <Separator Height="1" Background="#6f42c1" Margin="0,5"/>
+                                    <TextBlock x:Name="txtDolarKarsiligi" Text="Depo Değeri ($): 0.00" Foreground="#28a745" FontWeight="Bold"/>
+                                    <TextBlock x:Name="txtEuroKarsiligi" Text="Depo Değeri (€): 0.00" Foreground="#17a2b8" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <GridSplitter Grid.Column="1" Background="Transparent" ResizeDirection="Columns" Width="5"/>
+
+                    <Grid Grid.Column="2" Margin="15,40,15,15">
                         
-                <TextBlock x:Name="txtUyari" Foreground="#ff6b6b" FontWeight="Bold" Margin="0,15,0,0" TextWrapping="Wrap" FontSize="14"/>
-            </StackPanel> 
+                        <Button x:Name="btnTemaDegistir" Content="☀️" Width="45" Height="45" CornerRadius="25" FontSize="24" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Margin="0,-25,0,0" ZIndex="100" ToolTip.Tip="Temayı Değiştir">
+                            <Button.Styles>
+                                <Style Selector="Button">
+                                    <Setter Property="Transitions">
+                                        <Transitions><TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3"/></Transitions>
+                                    </Setter>
+                                </Style>
+                                <Style Selector="Button:pressed">
+                                    <Setter Property="RenderTransform" Value="scale(0.8) rotate(30deg)"/>
+                                </Style>
+                            </Button.Styles>
+                        </Button>
+
+                        <StackPanel>
+                            <TextBlock Text="Mevcut Stoklar" FontWeight="Bold" FontSize="20" Margin="0,0,0,10"/>
+                            
+                            <Grid Margin="0,0,0,15" ColumnDefinitions="*, Auto">
+                                <TextBox x:Name="txtArama" Grid.Column="0" PlaceholderText="🔍 Ürün Adı veya Barkod ile Ara..." TextChanged="TxtArama_TextChanged" Margin="0,0,10,0"/>
+                                <Button Grid.Column="1" Content="☰" Width="40" Height="40" Background="Transparent" FontSize="22" BorderThickness="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip.Tip="Filtrele">
+                                    <Button.Flyout>
+                                        <MenuFlyout>
+                                            <MenuItem Header="Tüm Ürünler" Click="MenuItemFiltre_Click"/>
+                                            <MenuItem Header="⚠️ Kritik Stok" Click="MenuItemFiltre_Click"/>
+                                            <MenuItem Header="💻 Bilgisayar" Click="MenuItemFiltre_Click"/>
+                                            <MenuItem Header="☎️ Telefon" Click="MenuItemFiltre_Click"/>
+                                            <MenuItem Header="📺 Televizyon" Click="MenuItemFiltre_Click"/>
+                                            <MenuItem Header="❄️ Beyaz Eşya" Click="MenuItemFiltre_Click"/>
+                                        </MenuFlyout>
+                                    </Button.Flyout>
+                                </Button>
+                            </Grid>
+
+                            <Border BorderBrush="#495057" BorderThickness="0,0,0,1" Margin="0,0,0,5" Padding="5">
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15">
+                                        <TextBlock Text="Barkod" FontWeight="Bold" Foreground="#adb5bd" Width="80"/>
+                                        <TextBlock Text="Ürün Adı" FontWeight="Bold" Foreground="#adb5bd" Width="130"/>
+                                        <TextBlock Text="Stok" FontWeight="Bold" Foreground="#adb5bd" Width="70"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="İşlemler" FontWeight="Bold" Foreground="#adb5bd" Margin="0,0,15,0"/>
+                                </Grid>
+                            </Border>
+
+                            <ListBox x:Name="lstUrunler" Height="250" SelectionMode="Toggle">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate x:DataType="m:Urun">
+                                        <Grid ColumnDefinitions="*, Auto">
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Barkod}" FontWeight="Bold" Width="80"/>
+                                                <TextBlock Text="{Binding UrunAdi}" Width="130"/>
+                                                <TextBlock Text="{Binding StokMiktari, StringFormat=' {0}'}" Foreground="#ff6b6b" Width="70"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                                                <Button Content="👁️" Click="BtnOzellikGor_Click" CommandParameter="{Binding}" Background="#17a2b8" Foreground="White" FontSize="14" Padding="8" CornerRadius="20" ToolTip.Tip="Teknik Özellikleri Gör"/>
+                                                <Button Content="🖋️" Click="BtnSatirGuncelle_Click" CommandParameter="{Binding}" Background="HotPink" Foreground="White" FontSize="14" Padding="8" CornerRadius="20" ToolTip.Tip="Ürünü Düzenle"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,10,0,0">
+                                <Button x:Name="btnExcelAktar" Content="📥 Excel'e Aktar (CSV)" Background="#198754" Foreground="White" Padding="15,5" Click="BtnExcelAktar_Click"/>
+                                <Button x:Name="btnSil" Content="🗑️ Seçili Ürünü Sil" Background="#dc3545" Foreground="White" Padding="15,5" Click="BtnSil_Click"/>
+                            </StackPanel>
+                            
+                            <TextBlock x:Name="txtUyari" Foreground="#ff6b6b" FontWeight="Bold" Margin="0,15,0,0" TextWrapping="Wrap" FontSize="14" IsVisible="False"/>
+                        
+                        </StackPanel> 
+                    </Grid>
+                </Grid>
+
+                <Grid x:Name="sayfaFinans" IsVisible="False" Margin="25">
+                    <StackPanel Spacing="20">
+                        
+                        <TextBlock Text="📊 Stok Finans Özeti" FontSize="26" FontWeight="Bold" Foreground="#b388ff"/>                        
+                        <Separator Background="#333333" Margin="0,0,0,10"/>
+
+                        <Border Background="#1e1e1e" CornerRadius="12" Padding="20" Margin="0,0,0,15" BorderBrush="#28a745" BorderThickness="0,0,0,4">
+                            <StackPanel>
+                                <TextBlock Text="Toplam Stok Değeri" Foreground="#adb5bd" FontSize="15" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="txtFinansToplamDeger" Text="0.00 TL" FontSize="32" FontWeight="Bold" Foreground="#28a745" Margin="0,10,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="Kategori Bazlı Portföy Dağılımı" FontSize="20" FontWeight="Bold" Margin="0,10,0,10"/>
+                        
+                        <Border Background="#252525" Padding="15,10" CornerRadius="8,8,0,0">
+                            <Grid ColumnDefinitions="2*, *, *">
+                                <TextBlock Grid.Column="0" Text="Kategori" FontWeight="Bold" Foreground="#adb5bd"/>
+                                <TextBlock Grid.Column="1" Text="Toplam Ürün" FontWeight="Bold" Foreground="#adb5bd"/>
+                                <TextBlock Grid.Column="2" Text="Finansal Değer (Hacim)" FontWeight="Bold" Foreground="#adb5bd" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </Border>
+
+                        <Border Background="#1e1e1e" CornerRadius="0,0,8,8" Padding="5">
+                            <ListBox x:Name="lstKategoriAnaliz" Background="Transparent" BorderThickness="0" Height="220">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate x:CompileBindings="False">
+                                        <Border BorderBrush="#333333" BorderThickness="0,0,0,1" Padding="10">
+                                            <Grid ColumnDefinitions="2*, *, *">
+                                                <TextBlock Grid.Column="0" Text="{Binding KategoriAdi}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Adet, StringFormat='{}{0} Adet'}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding ToplamDeger, StringFormat='{}{0:N2} TL'}" Foreground="#f43f5e" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="sayfaPersonel" IsVisible="False" Margin="25">
+                    <StackPanel Spacing="15">
+                        
+                        <TextBlock Text="👥 Personel Yönetimi ve Yetkilendirme" FontSize="26" FontWeight="Bold" Foreground="#adb5bd"/>
+                        <Separator Background="#333333" Margin="0,0,0,10"/>
+
+                        <Grid ColumnDefinitions="300, 20, *">
+                            
+                            <Border Grid.Column="0" Background="#1e1e1e" CornerRadius="10" Padding="20" BorderBrush="#333333" BorderThickness="1" VerticalAlignment="Top">
+                                <StackPanel Spacing="15">
+                                    <TextBlock Text="Yeni Kullanıcı Ekle" FontWeight="Bold" FontSize="18" Margin="0,0,0,5" Foreground="#0d6efd"/>
+                                    <TextBox x:Name="txtYeniKullanici" PlaceholderText="Kullanıcı Adı"/>
+                                    <TextBox x:Name="txtYeniSifre" PlaceholderText="Şifre" PasswordChar="*"/>
+                                    <ComboBox x:Name="cmbYeniYetki" HorizontalAlignment="Stretch" PlaceholderText="Yetki Rolü Seçin">
+                                        <ComboBoxItem Content="Admin"/>
+                                        <ComboBoxItem Content="Personel"/>
+                                    </ComboBox>
+                                    <Button x:Name="btnPersonelEkle" Content="Kullanıcıyı Kaydet" Background="#0d6efd" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" Margin="0,10,0,0" Click="BtnPersonelEkle_Click"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Background="#1e1e1e" CornerRadius="10" Padding="20" BorderBrush="#333333" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="Sistemdeki Aktif Kullanıcılar" FontWeight="Bold" FontSize="18" Margin="0,0,0,15" Foreground="#28a745"/>
+                                    
+                                    <Border Background="#252525" Padding="15,10" CornerRadius="5,5,0,0">
+                                        <Grid ColumnDefinitions="*, *, Auto">
+                                            <TextBlock Grid.Column="0" Text="Kullanıcı Adı" FontWeight="Bold" Foreground="#adb5bd"/>
+                                            <TextBlock Grid.Column="1" Text="Yetki Rolü" FontWeight="Bold" Foreground="#adb5bd"/>
+                                            <TextBlock Grid.Column="2" Text="İşlem" FontWeight="Bold" Foreground="#adb5bd" Width="70" TextAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                    
+                                    <ListBox x:Name="lstPersoneller" Background="Transparent" BorderThickness="0" Height="250">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate x:CompileBindings="False">
+                                                <Border BorderBrush="#333333" BorderThickness="0,0,0,1" Padding="10,12">
+                                                    <Grid ColumnDefinitions="*, *, Auto">
+                                                        <TextBlock Grid.Column="0" Text="{Binding KullaniciAdi}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Yetki}" VerticalAlignment="Center" Foreground="{Binding YetkiRenk}"/>
+                                                        <Button Grid.Column="2" Content="🗑️ Sil" Background="#dc3545" Foreground="White" CornerRadius="5" Click="BtnPersonelSil_Click" CommandParameter="{Binding}" Width="70" HorizontalContentAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="sayfaAyarlar" IsVisible="False" Margin="25">
+                    <StackPanel Spacing="20">
+                        
+                        <TextBlock Text="⚙️ Sistem ve Uygulama Ayarları" FontSize="26" FontWeight="Bold" Foreground="#adb5bd"/>
+                        <Separator Background="#333333" Margin="0,0,0,10"/>
+
+                        <Border Background="#1e1e1e" CornerRadius="10" Padding="20" BorderBrush="#333333" BorderThickness="1">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <StackPanel Grid.Column="0" Spacing="5" VerticalAlignment="Center">
+                                    <TextBlock Text="Veritabanı Yedekleme (Backup)" FontWeight="Bold" FontSize="18" Foreground="#28a745"/>
+                                    <TextBlock Text="Tüm stok, finans ve kullanıcı verilerinizi güvenli bir şekilde bilgisayarınıza yedekleyin." Foreground="#6c757d" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="💾 Şimdi Yedekle" Background="#28a745" Foreground="White" FontWeight="Bold" Padding="15,10" CornerRadius="5" Click="BtnVeritabaniniYedekle_Click"/>
+                            </Grid>
+                        </Border>
+
+                        <Border Background="#1e1e1e" CornerRadius="10" Padding="20" BorderBrush="#333333" BorderThickness="1">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Uygulama Hakkında" FontWeight="Bold" FontSize="18" Foreground="#0d6efd"/>
+                                <Grid ColumnDefinitions="150, *">
+                                    <TextBlock Grid.Column="0" Text="Sürüm:" FontWeight="Bold" Foreground="#adb5bd"/>
+                                    <TextBlock Grid.Column="1" Text="v1.0.0 (Release)" Foreground="#adb5bd"/>
+                                </Grid>
+                                <Grid ColumnDefinitions="150, *">
+                                    <TextBlock Grid.Column="0" Text="Geliştirici:" FontWeight="Bold" Foreground="#adb5bd"/>
+                                    <TextBlock Grid.Column="1" Text="Zeynep Deniz, Elifnaz Başgören" Foreground="#adb5bd"/>
+                                </Grid>
+                                <Grid ColumnDefinitions="150, *">
+                                    <TextBlock Grid.Column="0" Text="Altyapı:" FontWeight="Bold" Foreground="#adb5bd"/>
+                                    <TextBlock Grid.Column="1" Text="C# - .NET 8.0 &amp; Avalonia UI" Foreground="#adb5bd"/>
+                                </Grid>
+                                <Grid ColumnDefinitions="150, *">
+                                    <TextBlock Grid.Column="0" Text="Veritabanı:" FontWeight="Bold" Foreground="#adb5bd"/>
+                                    <TextBlock Grid.Column="1" Text="SQLite (Lokal)" Foreground="#adb5bd"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="#1e1e1e" CornerRadius="10" Padding="20" BorderBrush="#dc3545" BorderThickness="1">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <StackPanel Grid.Column="0" Spacing="5" VerticalAlignment="Center">
+                                    <TextBlock Text="Oturumu Kapat" FontWeight="Bold" FontSize="18" Foreground="#dc3545"/>
+                                    <TextBlock Text="Mevcut kullanıcı oturumunu sonlandırıp giriş ekranına güvenli bir şekilde geri dönün." Foreground="#6c757d" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="🚪 Çıkış Yap" Background="#dc3545" Foreground="White" FontWeight="Bold" Padding="15,10" CornerRadius="5" Click="BtnCikisYap_Click"/>
+                            </Grid>
+                        </Border>
+
+                    </StackPanel>
+                </Grid>
+
+            </Grid>
         </Grid>
+
+        <Grid x:Name="gridOnay" Background="#CC000000" IsVisible="False" ZIndex="2000">
+            <Border Background="#1e1e1e" CornerRadius="15" Padding="40" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#6f42c1" BorderThickness="2" BoxShadow="0 10 30 5 #0a0a0a">
+                <StackPanel Spacing="25">
+                    <TextBlock Text="⚠️" FontSize="40" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="txtOnayMesaji" Text="Emin misiniz?" FontSize="18" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Spacing="20" HorizontalAlignment="Center" Margin="0,10,0,0">
+                        <Button x:Name="btnOnayEvet" Content="Evet, Onaylıyorum" Background="#28a745" Foreground="White" FontWeight="Bold" Padding="15,10" Click="BtnOnayEvet_Click"/>
+                        <Button x:Name="btnOnayHayir" Content="İptal Et" Background="#dc3545" Foreground="White" FontWeight="Bold" Padding="15,10" Click="BtnOnayHayir_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border x:Name="brdToast" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30" Padding="20,15" CornerRadius="10" Background="#2b2b2b" BorderBrush="#28a745" BorderThickness="2" IsVisible="False" ZIndex="1000">
+            <StackPanel Orientation="Horizontal" Spacing="15">
+                <TextBlock x:Name="txtToastSimge" Text="✅" FontSize="20"/>
+                <TextBlock x:Name="txtToastMesaj" Text="İşlem Başarılı!" VerticalAlignment="Center" FontWeight="Bold" Foreground="White"/>
+            </StackPanel>
+        </Border>
 
     </Grid>
 </Window>

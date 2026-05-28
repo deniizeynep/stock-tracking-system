@@ -9,7 +9,7 @@
         <StackPanel VerticalAlignment="Center" Spacing="20">
             
             <TextBlock Text="🔐" FontSize="60" HorizontalAlignment="Center"/>
-            <TextBlock Text="Yönetici Girişi" FontSize="24" FontWeight="Bold" 
+            <TextBlock Text="Sisteme Giriş" FontSize="24" FontWeight="Bold" 
                        HorizontalAlignment="Center" Foreground="#b388ff" Margin="0,0,0,10"/>
             
             <TextBlock Text="Kullanıcı Adı:"/>

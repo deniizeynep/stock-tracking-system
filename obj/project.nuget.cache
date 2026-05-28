@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sjzUv+rCxEu7qauz+KhMrTS+FB9K8oJ0wltMZKDHpE+AGG1szxHUNwaSaeoHHjpRUSFJObx8MW9uKU9dEzCd/Q==",
+  "dgSpecHash": "qWmrw3Kc1KgW9uwa6LY3sNPd9+dIPEr1gr8vepaWXS7h6KCzhnaob/BMIbtdNnGPXerFxVB4EcA6kjjWYCe3VA==",
   "success": true,
   "projectFilePath": "/home/zeynep/stock-tracking-system/StokTakipSistemi.csproj",
   "expectedPackageFiles": [
@@ -31,6 +31,7 @@
     "/home/zeynep/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
     "/home/zeynep/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
     "/home/zeynep/.nuget/packages/microsoft.io.recyclablememorystream/3.0.1/microsoft.io.recyclablememorystream.3.0.1.nupkg.sha512",
+    "/home/zeynep/.nuget/packages/microsoft.net.illink.tasks/8.0.27/microsoft.net.illink.tasks.8.0.27.nupkg.sha512",
     "/home/zeynep/.nuget/packages/skiasharp/3.119.3-preview.1.1/skiasharp.3.119.3-preview.1.1.nupkg.sha512",
     "/home/zeynep/.nuget/packages/skiasharp.nativeassets.linux/3.119.3-preview.1.1/skiasharp.nativeassets.linux.3.119.3-preview.1.1.nupkg.sha512",
     "/home/zeynep/.nuget/packages/skiasharp.nativeassets.macos/3.119.3-preview.1.1/skiasharp.nativeassets.macos.3.119.3-preview.1.1.nupkg.sha512",
@@ -42,7 +43,10 @@
     "/home/zeynep/.nuget/packages/sqlitepclraw.provider.e_sqlite3/2.1.11/sqlitepclraw.provider.e_sqlite3.2.1.11.nupkg.sha512",
     "/home/zeynep/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
     "/home/zeynep/.nuget/packages/system.memory/4.5.3/system.memory.4.5.3.nupkg.sha512",
-    "/home/zeynep/.nuget/packages/tmds.dbus.protocol/0.92.0/tmds.dbus.protocol.0.92.0.nupkg.sha512"
+    "/home/zeynep/.nuget/packages/tmds.dbus.protocol/0.92.0/tmds.dbus.protocol.0.92.0.nupkg.sha512",
+    "/home/zeynep/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/8.0.27/microsoft.netcore.app.runtime.linux-x64.8.0.27.nupkg.sha512",
+    "/home/zeynep/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/8.0.27/microsoft.aspnetcore.app.runtime.linux-x64.8.0.27.nupkg.sha512",
+    "/home/zeynep/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.27/microsoft.netcore.app.host.linux-x64.8.0.27.nupkg.sha512"
   ],
   "logs": []
 }

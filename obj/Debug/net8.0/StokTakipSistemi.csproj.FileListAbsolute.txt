@@ -1,3 +1,11 @@
+/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.csproj.AssemblyReference.cache
+/home/zeynep/stock-tracking-system/obj/Debug/net8.0/Avalonia/Resources.Inputs.cache
+/home/zeynep/stock-tracking-system/obj/Debug/net8.0/Avalonia/resources
+/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.GeneratedMSBuildEditorConfig.editorconfig
+/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.AssemblyInfoInputs.cache
+/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.AssemblyInfo.cs
+/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.csproj.CoreCompileInputs.cache
+/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.sourcelink.json
 /home/zeynep/stock-tracking-system/bin/Debug/net8.0/StokTakipSistemi
 /home/zeynep/stock-tracking-system/bin/Debug/net8.0/StokTakipSistemi.deps.json
 /home/zeynep/stock-tracking-system/bin/Debug/net8.0/StokTakipSistemi.runtimeconfig.json
@@ -103,14 +111,6 @@
 /home/zeynep/stock-tracking-system/bin/Debug/net8.0/runtimes/win-arm64/native/e_sqlite3.dll
 /home/zeynep/stock-tracking-system/bin/Debug/net8.0/runtimes/win-x64/native/e_sqlite3.dll
 /home/zeynep/stock-tracking-system/bin/Debug/net8.0/runtimes/win-x86/native/e_sqlite3.dll
-/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.csproj.AssemblyReference.cache
-/home/zeynep/stock-tracking-system/obj/Debug/net8.0/Avalonia/Resources.Inputs.cache
-/home/zeynep/stock-tracking-system/obj/Debug/net8.0/Avalonia/resources
-/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.GeneratedMSBuildEditorConfig.editorconfig
-/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.AssemblyInfoInputs.cache
-/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.AssemblyInfo.cs
-/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.csproj.CoreCompileInputs.cache
-/home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.sourcelink.json
 /home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.csproj.CopyComplete
 /home/zeynep/stock-tracking-system/obj/Debug/net8.0/StokTakipSistemi.dll
 /home/zeynep/stock-tracking-system/obj/Debug/net8.0/refint/StokTakipSistemi.dll

@@ -2,21 +2,38 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:m="using:StokTakipSistemi.Models"
         x:Class="StokTakipSistemi.MainWindow"
+        Icon="avares://StokTakipSistemi/Assets/logo.png"
         Title="Stok Takip Sistemi" Width="930" Height="550"
         MinWidth="880" MinHeight="550"> 
+    <Window.Styles>
+        <Style Selector="Button.MenuButonu:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style Selector="Button.MenuButonu:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+    </Window.Styles>
         
     <Grid>
         <Grid ColumnDefinitions="80, *">
             
             <Border Grid.Column="0" Background="#1a1a1a" BorderBrush="#333333" BorderThickness="0,0,1,0" ZIndex="100">
-                <StackPanel Spacing="30" Margin="0,40,0,0">
-                    <Button Click="BtnMenuStok_Click" Content="📦" FontSize="32" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Stok Yönetimi"/>
-                    <Button Click="BtnMenuFinans_Click" Content="📊" FontSize="26" Foreground="#6f42c1" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Stok Finans Özeti"/>                    
-                    <Button Click="BtnMenuPersonel_Click" Content="👥" FontSize="26" Foreground="#adb5bd" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Personeller"/>
+                <StackPanel Spacing="30" Margin="0,30,0,0">
                     
-                    <Separator Background="#333333" Margin="15,10"/>
+                    <!-- LOGO MAKSİMUM BOYUTA ÇIKARILDI (75x75) -->
+                    <Image Source="avares://StokTakipSistemi/Assets/logo.png" Width="75" Height="75" Margin="0,-20,0,5" ToolTip.Tip="Stok Takip Sistemi"/>
+                    <Separator Background="#333333" Margin="15,0,15,5"/>
+
+                    <!-- BUTONLARA MenuButonu SINIFI EKLENDİ -->
+                    <Button Classes="MenuButonu" Click="BtnMenuStok_Click" Content="📦" FontSize="32" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Stok Yönetimi"/>
+                    <Button Classes="MenuButonu" Click="BtnMenuFinans_Click" Content="📊" FontSize="26" Foreground="#6f42c1" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Stok Finans Özeti"/>                    
+                    <Button Classes="MenuButonu" Click="BtnMenuPersonel_Click" Content="👥" FontSize="26" Foreground="#adb5bd" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Personeller"/>
                     
-                    <Button Click="BtnMenuAyarlar_Click" Content="⚙️" FontSize="26" Foreground="#adb5bd" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Sistem Ayarları"/>
+                    <Separator Background="#333333" Margin="15,5"/>
+                    
+                    <Button Classes="MenuButonu" Click="BtnMenuAyarlar_Click" Content="⚙️" FontSize="26" Foreground="#adb5bd" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" ToolTip.Tip="Sistem Ayarları"/>
                 </StackPanel>
             </Border>
 
